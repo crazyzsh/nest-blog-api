@@ -1,26 +1,4 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
@@ -58,16 +36,71 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## 1. params、query、body三者使用场景
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 1.1 body
 
-## Stay in touch
+多数运用于post、put请求
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```js
+axios.post('/giraffe', {
+  key1: 'value1',
+  key2: 'value2'
+})
+```
 
-## License
+示例：
 
-Nest is [MIT licensed](LICENSE).
+```js
+app.get('/giraffe', (req, res) => {
+ console.log(req.body.key1) //value1
+ console.log(req.body.key2) //value2
+})
+```
+
+
+
+### 1.2 params
+
+多用于带参数的请求
+
+```
+GET  http://localhost:3000/giraffe/1
+```
+
+示例：
+
+```js
+app.get('/giraffe/:number', (req, res) => {
+  console.log(req.params.number)
+ })
+```
+
+
+
+### 1.3 query
+
+多用于get请求（普通携带参数）
+
+```
+GET  http://localhost:3000/animals?page=10
+```
+
+示例：
+
+```js
+ app.get('/animals', ()=>{
+   console.log(req.query.page) // 10
+  })
+```
+
+
+
+# 基本使用
+
+1. `nest g mo 模块名 `：创建模块名。此时将在src目录下创建一个以模块名为名称的文件夹，同时在文件夹下生成一个`模块名.module.ts`文件。
+
+2. `nest g co 控制器名`：创建控制器。此时将在src目录下后续路由都是以“控制器名称为前缀”，后续的路由就可以以模块化的方式进行书写了，即在`controller.ts`文件中进行书写
+
+ps：上述两步只有在模块名和控制器名**相同**时才会才会将`TS`文件放置于**同一个文件夹下**，否则将以模块名或者控制器名分别创建文件夹。
+
